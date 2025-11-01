@@ -23,7 +23,7 @@ dependencies {
   implementation("ch.qos.logback:logback-classic:1.5.20")
   implementation("co.elastic.logging:logback-ecs-encoder:1.7.0")
 
-  implementation("com.fasterxml.jackson.core:jackson-databind:2.20.0")
+  implementation("com.fasterxml.jackson.core:jackson-databind:2.20.1")
 
   testImplementation(kotlin("test"))
 }
