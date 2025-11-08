@@ -17,7 +17,7 @@ dependencies {
   implementation("io.javalin:javalin:6.7.0")
   implementation("io.javalin:javalin-micrometer:6.7.0")
 
-  implementation("io.micrometer:micrometer-registry-prometheus:1.15.5")
+  implementation("io.micrometer:micrometer-registry-prometheus:1.16.0")
 
   implementation("org.slf4j:slf4j-api:2.0.17")
   implementation("ch.qos.logback:logback-classic:1.5.20")
