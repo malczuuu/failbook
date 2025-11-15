@@ -20,7 +20,7 @@ dependencies {
   implementation("io.micrometer:micrometer-registry-prometheus:1.16.0")
 
   implementation("org.slf4j:slf4j-api:2.0.17")
-  implementation("ch.qos.logback:logback-classic:1.5.20")
+  implementation("ch.qos.logback:logback-classic:1.5.21")
   implementation("co.elastic.logging:logback-ecs-encoder:1.7.0")
 
   implementation("com.fasterxml.jackson.core:jackson-databind:2.20.1")
