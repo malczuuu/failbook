@@ -16,6 +16,8 @@ this application was created. It allows configuring a simple static `Problem` do
 
 ### Using Go (via Taskfile)
 
+It uses [Taskfile](https://taskfile.dev/docs/getting-started) tool.
+
 ```bash
 git clone https://github.com/malczuuu/failbook.git
 cd failbook
