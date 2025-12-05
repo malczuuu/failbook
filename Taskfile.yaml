@@ -5,6 +5,11 @@ tasks:
     cmds:
       - task --list
 
+  test:
+    desc: Run tests
+    cmds:
+      - go test -v ./...
+
   build:
     desc: Build application
     cmds:
