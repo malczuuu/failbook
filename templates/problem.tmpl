@@ -1,0 +1,93 @@
+{{ define "problem.tmpl" }}
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Error Documentation</title>
+      <style>
+         body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f8f9fa;
+            color: #212529;
+         }
+         header {
+            background-color: #343a40;
+            color: #fff;
+            padding: 1rem 2rem;
+         }
+         header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+         }
+         main {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+         }
+         section.error {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+         }
+         section.error h2 {
+            margin-top: 0;
+            color: #dc3545;
+         }
+         section.error p {
+            line-height: 1.5;
+         }
+         pre {
+            background-color: #f1f3f5;
+            padding: 1rem;
+            border-radius: 4px;
+            overflow-x: auto;
+         }
+         a {
+            color: #0d6efd;
+            text-decoration: none;
+         }
+         a:hover {
+            text-decoration: underline;
+         }
+         nav.resources {
+            margin-top: 1rem;
+         }
+         nav.resources ul {
+            padding-left: 1.2rem;
+         }
+      </style>
+   </head>
+   <body>
+      <header>
+         <h1>API Error Documentation</h1>
+      </header>
+      <main>
+         <!-- Example Error Block -->
+         <section class="error">
+            <h2>404 Not Found</h2>
+            <p>The requested resource could not be found. This typically occurs when the URL is incorrect or the resource has been deleted.</p>
+            <h3>Example Response:</h3>
+            <pre>{
+  "error": "Not Found",
+  "status": 404,
+  "message": "The requested resource does not exist"
+}</pre>
+            <nav class="resources">
+               <h3>Related Resources:</h3>
+               <ul>
+                  <li><a href="/docs/errors/400.html">400 Bad Request</a></li>
+                  <li><a href="/docs/errors/401.html">401 Unauthorized</a></li>
+                  <li><a href="/docs/errors/500.html">500 Internal Server Error</a></li>
+               </ul>
+            </nav>
+         </section>
+         <!-- You can copy the above <section class="error"> for multiple error types -->
+      </main>
+   </body>
+</html>
+{{ end }}

@@ -1,0 +1,95 @@
+{{ define "index.tmpl" }}
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>API Error Documentation</title>
+      <style>
+         body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f8f9fa;
+            color: #212529;
+         }
+         header {
+            background-color: #343a40;
+            color: #fff;
+            padding: 1rem 2rem;
+         }
+         header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+         }
+         main {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+         }
+         section.error-list {
+            background: #fff;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+         }
+         section.error-list h2 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            color: #212529;
+         }
+         ul {
+            list-style-type: none;
+            padding-left: 0;
+         }
+         li {
+             margin-bottom: 0.8rem;
+         }
+         a {
+            color: #0d6efd;
+            text-decoration: none;
+         }
+         a:hover {
+            text-decoration: underline;
+         }
+         p.description {
+            margin: 0.2rem 0 0.8rem 0;
+            font-size: 0.95rem;
+            color: #495057;
+         }
+      </style>
+   </head>
+   <body>
+      <header>
+         <h1>API Error Documentation</h1>
+      </header>
+      <main>
+         <section class="error-list">
+            <h2>Available API Errors</h2>
+            <ul>
+               <li>
+                  <a href="400.html">400 Bad Request</a>
+                  <p class="description">The request was invalid or cannot be served.</p>
+               </li>
+               <li>
+                  <a href="401.html">401 Unauthorized</a>
+                  <p class="description">Authentication is required or has failed.</p>
+               </li>
+               <li>
+                  <a href="403.html">403 Forbidden</a>
+                  <p class="description">You do not have permission to access this resource.</p>
+               </li>
+               <li>
+                  <a href="404.html">404 Not Found</a>
+                  <p class="description">The requested resource could not be found.</p>
+               </li>
+               <li>
+                  <a href="500.html">500 Internal Server Error</a>
+                  <p class="description">An unexpected server error occurred.</p>
+               </li>
+            </ul>
+         </section>
+      </main>
+   </body>
+</html>
+{{ end }}
