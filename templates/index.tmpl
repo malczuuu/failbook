@@ -67,26 +67,12 @@
          <section class="error-list">
             <h2>Available API Errors</h2>
             <ul>
+               {{ range $id, $error := .errors }}
                <li>
-                  <a href="400.html">400 Bad Request</a>
-                  <p class="description">The request was invalid or cannot be served.</p>
+                  <a href="{{ $.baseHref }}/{{ $error.ID }}">{{ $error.StatusCode }} {{ $error.Title }}</a>
+                  <p class="description">{{ $error.Summary }}</p>
                </li>
-               <li>
-                  <a href="401.html">401 Unauthorized</a>
-                  <p class="description">Authentication is required or has failed.</p>
-               </li>
-               <li>
-                  <a href="403.html">403 Forbidden</a>
-                  <p class="description">You do not have permission to access this resource.</p>
-               </li>
-               <li>
-                  <a href="404.html">404 Not Found</a>
-                  <p class="description">The requested resource could not be found.</p>
-               </li>
-               <li>
-                  <a href="500.html">500 Internal Server Error</a>
-                  <p class="description">An unexpected server error occurred.</p>
-               </li>
+               {{ end }}
             </ul>
          </section>
       </main>

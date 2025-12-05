@@ -26,7 +26,19 @@ func LoggingAndMetricsMiddleware() gin.HandlerFunc {
 			routePath = path
 		}
 
-		log.Info().Str("method", method).Str("path", routePath).Int("status", status).Dur("latency", latency).Msg("request")
+		params := map[string]string{}
+		for _, p := range c.Params {
+			params[p.Key] = p.Value
+		}
+
+		log.Info().
+			Str("method", method).
+			Str("path", routePath).
+			Interface("params", params).
+			Interface("query", c.Request.URL.Query()).
+			Int("status", status).
+			Dur("latency", latency).
+			Msg("processed http request")
 
 		metrics.HTTPRequestsTotal.WithLabelValues(method, routePath, strconv.Itoa(status)).Inc()
 		metrics.HTTPRequestDurationSeconds.WithLabelValues(method, routePath).Observe(latency.Seconds())
