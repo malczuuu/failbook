@@ -27,7 +27,10 @@ func main() {
 
 	router.LoadHTMLGlob("./templates/*")
 
-	router.GET("/metrics", gin.WrapH(promhttp.Handler()))
+	if cfg.PrometheusEnabled {
+		router.GET("/manage/prometheus", gin.WrapH(promhttp.Handler()))
+		log.Info().Str("path", "/manage/prometheus").Msg("prometheus endpoint exposed")
+	}
 
 	router.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.tmpl", gin.H{"title": "Posts"})

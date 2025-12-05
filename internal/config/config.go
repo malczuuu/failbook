@@ -5,17 +5,16 @@ import (
 )
 
 type Config struct {
-	Port     string
-	LogLevel string
+	Port              string
+	LogLevel          string
+	PrometheusEnabled bool
 }
 
 func Load() Config {
-	port := getenv("FAILBOOK_PORT", "12001")
-	logLevel := getenv("FAILBOOK_LOG_LEVEL", "info")
-
 	return Config{
-		Port:     port,
-		LogLevel: logLevel,
+		Port:              getenv("FAILBOOK_PORT", "12001"),
+		LogLevel:          getenv("FAILBOOK_LOG_LEVEL", "info"),
+		PrometheusEnabled: getenv("FAILBOOK_PROMETHEUS_ENABLED", "false") == "true",
 	}
 }
 
