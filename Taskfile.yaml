@@ -9,4 +9,4 @@ tasks:
     desc: Build application
     cmds:
       - rm -rf dist/ && mkdir dist/
-      - go build -o ./dist/ ./cmd/template
+      - go build -o ./dist/ ./cmd/failbook
