@@ -1,0 +1,32 @@
+version: "1"
+id: "503"
+title: "Service Unavailable"
+status_code: 503
+summary: "The server is temporarily unable to handle the request."
+description: |
+  The server is **temporarily unable** to handle the request.
+  
+  ## Why This Happens
+  
+  This error is typically returned when:
+  
+  - The server is **temporarily overloaded**
+  - The server is down for **scheduled maintenance**
+  - A dependent service is unavailable
+  
+  ## What You Can Do
+  
+  - Wait a few moments and try again
+  - Check our status page for ongoing incidents
+  - If the problem persists, contact support
+  
+  ```
+  Retry-After: 60
+  ```
+  
+  The implication is that this is a **temporary condition** which will be alleviated after some delay.
+links:
+  - title: "HTTP 503 - MDN Web Docs"
+    href: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+  - title: "Service Availability Best Practices"
+    href: "https://www.rfc-editor.org/rfc/rfc9110.html#name-503-service-unavailable"

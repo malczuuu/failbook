@@ -1,0 +1,25 @@
+version: "1"
+id: "500"
+title: "Internal Server Error"
+status_code: 500
+summary: "The server encountered an unexpected condition that prevented it from fulfilling the request."
+description: |
+  The server encountered an **unexpected condition** that prevented it from fulfilling the request.
+  
+  ## What This Means
+  
+  This is a generic error message when the server encounters an unexpected condition. It indicates that something has gone wrong on the server side.
+  
+  ### Possible Reasons
+  
+  - Application code threw an unhandled exception
+  - Database connection failed
+  - External service dependency is unavailable
+  - Server configuration issue
+  
+  > **Note:** This error is logged on the server side and the development team has been notified.
+links:
+  - title: "HTTP 500 - MDN Web Docs"
+    href: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+  - title: "Troubleshooting Server Errors"
+    href: "https://www.rfc-editor.org/rfc/rfc9110.html#name-500-internal-server-error"

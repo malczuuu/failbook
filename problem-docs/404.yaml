@@ -1,0 +1,26 @@
+version: "1"
+id: "404"
+title: "Not Found"
+status_code: 404
+summary: "The requested resource could not be found on this server."
+description: |
+  The requested resource could not be found on this server.
+  
+  ## Common Causes
+  
+  This error occurs when:
+  
+  - The resource has been **moved** or **deleted**
+  - The URL contains a **typo** or is **malformed**
+  - The resource never existed in the first place
+  
+  ## What to Do
+  
+  1. Check the URL for typos
+  2. Try navigating from the homepage
+  3. Contact support if you believe this is an error
+links:
+  - title: "HTTP 404 - MDN Web Docs"
+    href: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404"
+  - title: "RFC 9110 - HTTP Semantics"
+    href: "https://www.rfc-editor.org/rfc/rfc9110.html#name-404-not-found"
