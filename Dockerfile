@@ -2,12 +2,12 @@ FROM golang:1.24-alpine AS builder
 
 WORKDIR /build
 
+COPY . .
+
 RUN chmod +x ./docker/healthcheck.sh
 RUN apk add --no-cache curl git
 RUN curl -sL https://taskfile.dev/install.sh | sh
-RUN ./bin/task --version
 
-COPY . .
 RUN ./bin/task build-prod
 
 FROM alpine:3.19
