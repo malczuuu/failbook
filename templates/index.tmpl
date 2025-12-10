@@ -69,7 +69,7 @@
             <ul>
                {{ range $id, $problem := .problems }}
                <li>
-                  <a href="{{ $.baseHref }}/{{ $problem.ID }}">{{ $problem.StatusCode }} {{ $problem.Title }}</a>
+                  <a href="{{ $.baseHref }}/{{ $problem.ID }}">{{ $problem.Name }}</a>
                   <p class="description">{{ $problem.Summary }}</p>
                </li>
                {{ end }}
