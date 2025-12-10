@@ -67,10 +67,10 @@
          <section class="error-list">
             <h2>Available API Errors</h2>
             <ul>
-               {{ range $id, $error := .errors }}
+               {{ range $id, $problem := .problems }}
                <li>
-                  <a href="{{ $.baseHref }}/{{ $error.ID }}">{{ $error.StatusCode }} {{ $error.Title }}</a>
-                  <p class="description">{{ $error.Summary }}</p>
+                  <a href="{{ $.baseHref }}/{{ $problem.ID }}">{{ $problem.StatusCode }} {{ $problem.Title }}</a>
+                  <p class="description">{{ $problem.Summary }}</p>
                </li>
                {{ end }}
             </ul>

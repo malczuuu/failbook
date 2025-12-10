@@ -74,7 +74,7 @@ func main() {
 		}
 
 		c.HTML(http.StatusOK, "problem.tmpl", gin.H{
-			"error":           problem,
+			"problem":         problem,
 			"baseHref":        cfg.BaseHref,
 			"descriptionHTML": markdown.RenderToHTML(problem.Description),
 		})

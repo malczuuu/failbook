@@ -4,7 +4,7 @@
    <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>{{ .error.StatusCode }} {{ .error.Title }} - Error Documentation</title>
+      <title>{{ .problem.StatusCode }} {{ .problem.Title }} - Error Documentation</title>
       <style>
          body {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -156,18 +156,18 @@
       <main>
          <a href="{{ .baseHref }}/" class="back-link">← Back to all errors</a>
          <section class="error">
-            <h2>{{ .error.StatusCode }} {{ .error.Title }}</h2>
-            {{ if .error.Summary }}
-            <p class="summary">{{ .error.Summary }}</p>
+            <h2>{{ .problem.StatusCode }} {{ .problem.Title }}</h2>
+            {{ if .problem.Summary }}
+            <p class="summary">{{ .problem.Summary }}</p>
             {{ end }}
             {{ if .descriptionHTML }}
             <div class="description">{{ .descriptionHTML }}</div>
             {{ end }}
-            {{ if .error.Links }}
+            {{ if .problem.Links }}
             <nav class="resources">
                <h3>Additional Resources:</h3>
                <ul>
-                  {{ range .error.Links }}
+                  {{ range .problem.Links }}
                   <li><a href="{{ .Href }}" target="_blank">{{ .Title }}</a></li>
                   {{ end }}
                </ul>
