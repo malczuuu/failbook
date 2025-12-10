@@ -80,6 +80,23 @@ func main() {
 		})
 	})
 
+	router.GET("/:id/*wildcard", func(c *gin.Context) {
+		id := c.Param("id") + c.Param("wildcard")
+		problem, exists := problemRegistry.Get(id)
+		if !exists {
+			c.HTML(http.StatusNotFound, "404.tmpl", gin.H{
+				"baseHref": cfg.BaseHref,
+			})
+			return
+		}
+
+		c.HTML(http.StatusOK, "problem.tmpl", gin.H{
+			"problem":         problem,
+			"baseHref":        cfg.BaseHref,
+			"descriptionHTML": markdown.RenderToHTML(problem.Description),
+		})
+	})
+
 	router.NoRoute(func(c *gin.Context) {
 		c.HTML(http.StatusNotFound, "404.tmpl", gin.H{
 			"baseHref": cfg.BaseHref,

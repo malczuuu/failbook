@@ -1,0 +1,11 @@
+version: "1"
+id: "custom/validation"
+name: "Validation Failed"
+title: "Bad Request"
+status_code: 400
+summary: "Request validation failed."
+description: |
+  Request violated enforced constraints.
+links:
+  - title: "Home"
+    href: "/"
