@@ -1,12 +1,8 @@
-FROM golang:1.24-alpine AS builder
-
-WORKDIR /build
+FROM failbook-builder:latest AS builder
 
 COPY . .
 
 RUN chmod +x ./docker/healthcheck.sh
-RUN apk add --no-cache curl git
-RUN curl -sL https://taskfile.dev/install.sh | sh
 
 RUN ./bin/task build-prod
 
@@ -16,7 +12,7 @@ ENV FAILBOOK_PORT=12001
 ENV FAILBOOK_LOG_LEVEL=info
 ENV FAILBOOK_HEALTH_ENABLED=false
 ENV FAILBOOK_PROMETHEUS_ENABLED=false
-ENV FAILBOOK_PROBLEM_DOCS_DIR=./problem-docs
+ENV FAILBOOK_PROBLEM_DOCS_DIR=/failbook/problem-docs
 ENV FAILBOOK_BASE_HREF=
 
 RUN apk --no-cache add ca-certificates dumb-init
