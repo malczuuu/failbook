@@ -27,13 +27,13 @@
             margin: 2rem auto;
             padding: 0 1rem;
          }
-         section.error-list {
+         section.problem-list {
             background: #fff;
             border-radius: 8px;
             padding: 1.5rem;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
          }
-         section.error-list h2 {
+         section.problem-list h2 {
             margin-top: 0;
             margin-bottom: 1rem;
             color: #212529;
@@ -61,11 +61,11 @@
    </head>
    <body>
       <header>
-         <h1>API Error Documentation</h1>
+         <h1>Problems Docs</h1>
       </header>
       <main>
-         <section class="error-list">
-            <h2>Available API Errors</h2>
+         <section class="problem-list">
+            <h2>Documented API Problems</h2>
             <ol>
                {{ range $id, $problem := .problems }}
                <li>

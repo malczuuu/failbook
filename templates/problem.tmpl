@@ -151,10 +151,10 @@
    </head>
    <body>
       <header>
-         <h1><a href="{{ .baseHref }}/">API Error Documentation</a></h1>
+         <h1><a href="{{ .baseHref }}/">Problems Docs</a></h1>
       </header>
       <main>
-         <a href="{{ .baseHref }}/" class="back-link">← Back to all errors</a>
+         <a href="{{ .baseHref }}/" class="back-link">← Back to homepage</a>
          <section class="error">
             <h2>{{ .problem.StatusCode }} {{ .problem.Title }}</h2>
             {{ if .problem.Summary }}
