@@ -4,18 +4,18 @@
 [![DockerHub](https://img.shields.io/docker/v/malczuuu/failbook?label=DockerHub)](https://hub.docker.com/r/malczuuu/failbook)
 [![License](https://img.shields.io/github/license/malczuuu/failbook)](https://github.com/malczuuu/failbook/blob/main/LICENSE)
 
-A simple HTTP API error documentation service written in Go. Failbook serves simple, markdown-powered error 
-documentation pages for HTTP API error responses.
+A simple HTTP API error documentation service written in Go. Failbook serves markdown-powered error documentation pages
+for HTTP API error responses.
 
-While working on [Problem4J](https://github.com/malczuuu/problem4j-spring) library, the initial assumption was that
-`type` field must be a resolvable HTTP URI. This turns out is not always the case, but for the sole purpose of
-experimentation, this application was created. It allows configuring a simple static `Problem` documentation pages.
+While working on [Problem4J](https://github.com/malczuuu/problem4j-spring), the initial assumption was that the `type`
+field must be a resolvable HTTP URI. It turns out this is not always the case, but for the purpose of experimentation
+this application was created. It allows configuring static `Problem` documentation pages.
 
 ## Quick Start
 
 ### Using Go
 
-Current instructions use [Taskfile](https://taskfile.dev/docs/getting-started) tool.
+Current instructions use the [Taskfile](https://taskfile.dev/docs/getting-started) tool.
 
 ```bash
 git clone https://github.com/malczuuu/failbook.git
@@ -31,16 +31,16 @@ Visit http://localhost:12001 to see your error documentation.
 
 ### Using Docker
 
-Docker images known on Docker Hub as [`malczuuu/failbook`](https://hub.docker.com/r/malczuuu/failbook).
+Docker images are available on Docker Hub as [`malczuuu/failbook`](https://hub.docker.com/r/malczuuu/failbook).
 
 ```bash
 docker run -p 12001:12001 -v $(pwd)/problem-docs:/failbook/problem-docs:ro malczuuu/failbook:latest
 ```
 
-See also [`failbook-compose/`](./failbook-compose/) for an `docker-compose.yaml` demo.
+See also `failbook-compose/` for a `docker-compose.yaml` demo.
 
-To build Docker image on local machine, use `build-docker` task. It will also build `failbook-builder:latest` image for
-speeding up subsequent builds. See [`Dockerfile.builder`](./Dockerfile.builder) for more details.
+To build the Docker image on a local machine, use the `build-docker` task. It will also build the
+`failbook-builder:latest` image to speed up subsequent builds. See `Dockerfile.builder` for more details.
 
 ```bash
 task build-docker
@@ -62,14 +62,14 @@ docker build -f Dockerfile -t malczuuu/failbook:latest .
 
 Failbook is configured via environment variables:
 
-| Variable                      | Default                  | Description                                                 |
-|-------------------------------|--------------------------|-------------------------------------------------------------|
-| `FAILBOOK_PORT`               | `12001`                  | HTTP server port                                            |
-| `FAILBOOK_LOG_LEVEL`          | `info`                   | log level (trace, debug, info, warn, error, fatal)          |
-| `FAILBOOK_HEALTH_ENABLED`     | `false`                  | enable health endpoint                                      |
-| `FAILBOOK_PROMETHEUS_ENABLED` | `false`                  | enable Prometheus metrics endpoint                          |
-| `FAILBOOK_PROBLEM_DOCS_DIR`   | `/failbook/problem-docs` | directory containing error YAML files                       |
-| `FAILBOOK_BASE_HREF`          | (empty)                  | base path for reverse proxy deployments (e.g., `/api/docs`) |
+| Variable                      | Default                  | Description                                                    |
+|-------------------------------|--------------------------|----------------------------------------------------------------|
+| `FAILBOOK_PORT`               | `12001`                  | HTTP server port                                               |
+| `FAILBOOK_LOG_LEVEL`          | `info`                   | Log level (`trace`, `debug`, `info`, `warn`, `error`, `fatal`) |
+| `FAILBOOK_HEALTH_ENABLED`     | `false`                  | Enable health check endpoints                                  |
+| `FAILBOOK_PROMETHEUS_ENABLED` | `false`                  | Enable Prometheus metrics endpoint                             |
+| `FAILBOOK_PROBLEM_DOCS_DIR`   | `/failbook/problem-docs` | Directory containing error YAML files                          |
+| `FAILBOOK_BASE_HREF`          | (empty)                  | Base path for reverse proxy deployments (e.g., `/api/docs`)    |
 
 ### Example
 
@@ -83,7 +83,7 @@ export FAILBOOK_BASE_HREF=/api/docs
 
 ## Error Configuration Format
 
-Error documentation is defined in YAML files in the `errors/` directory. Each file can contain one or more error
+Error documentation is defined in YAML files in the `errors/` directory. Each file may contain one or more error
 definitions.
 
 ### YAML Schema
@@ -91,7 +91,7 @@ definitions.
 ```yaml
 version: "1"               # Required: Schema version, must be "1"
 id: "404"                  # Required: Unique error identifier
-name: "Validation Failed"  # Optional: Compossed as "{title} {status_code}" if not provided
+name: "Validation Failed"  # Optional: Composed as "{title} {status_code}" if not provided
 title: "Not Found"         # Required: Short error title
 status_code: 404           # Required: HTTP status code
 summary: "The requested resource could not be found"  # Required: Brief summary (shown on index)
@@ -148,17 +148,17 @@ description: "You don't have permission to access this resource."
 
 ### Markdown Support
 
-The `description` field supports Markdown, powered by [`yuin/goldmark`](https://github.com/yuin/goldmark) library.
+The `description` field supports Markdown, powered by the [`yuin/goldmark`](https://github.com/yuin/goldmark) library.
 
 ## Endpoints
 
 ### Application Endpoints
 
-- `GET /` - error documentation index page
-- `GET /:id` - individual error detail page (`id` can be `multi/segment/value`)
+- `GET /` — error documentation index page  
+- `GET /:id` — individual error detail page (`id` may contain multiple path segments)
 
 ### Management Endpoints
 
-- `GET /manage/health/live` - liveness probe (always returns 200 OK, if enabled)
-- `GET /manage/health/ready` - readiness probe (returns 200 when ready, 503 when not, if enabled)
-- `GET /manage/prometheus` - prometheus metrics (if enabled)
+- `GET /manage/health/live` — liveness probe (always returns 200 OK, if enabled)  
+- `GET /manage/health/ready` — readiness probe (returns 200 when ready, 503 when not, if enabled)  
+- `GET /manage/prometheus` — Prometheus metrics (if enabled)
