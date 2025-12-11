@@ -3,8 +3,6 @@
 [![Go Build with Taskfile](https://github.com/malczuuu/failbook/actions/workflows/go-build-with-taskfile.yml/badge.svg)](https://github.com/malczuuu/failbook/actions/workflows/go-build-with-taskfile.yml)
 [![License](https://img.shields.io/github/license/malczuuu/failbook)](https://github.com/malczuuu/failbook/blob/main/LICENSE)
 
-⚠️ **Project Status: DRAFT / WORK IN PROGRESS** ⚠️
-
 A simple HTTP API error documentation service written in Go. Failbook serves simple, markdown-powered error 
 documentation pages for HTTP API error responses.
 
@@ -133,10 +131,10 @@ The `description` field supports Markdown, powered by [`yuin/goldmark`](https://
 ### Application Endpoints
 
 - `GET /` - error documentation index page
-- `GET /:id` - individual error detail page
+- `GET /:id` - individual error detail page (`id` can be `multi/segment/value`)
 
 ### Management Endpoints
 
-- `GET /manage/health/live` - liveness probe (always returns 200 OK)
-- `GET /manage/health/ready` - readiness probe (returns 200 when ready, 503 when not)
-- `GET /manage/prometheus` - prometheus metrics (when enabled)
+- `GET /manage/health/live` - liveness probe (always returns 200 OK, if enabled)
+- `GET /manage/health/ready` - readiness probe (returns 200 when ready, 503 when not, if enabled)
+- `GET /manage/prometheus` - prometheus metrics (if enabled)
