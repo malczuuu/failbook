@@ -1,0 +1,37 @@
+version: "1"
+id: "validation/constraint-violation"
+title: "Constraint Violation"
+status_code: 400
+summary: "One or more fields failed validation"
+description: |
+  ## What Happened
+
+  The request could not be processed because it contains invalid or inconsistent data.
+  One or more fields failed server-side validation.
+
+  ## Common Causes
+
+  - **Invalid format**: e.g., malformed email, phone, or ID
+  - **Out-of-range values**: numbers too small or too large
+  - **Missing required fields**
+  - **Constraint violations**: uniqueness, length limits, or disallowed values
+
+  ## Example Error
+
+  ```json
+  {
+    "status": 400,
+    "title": "Constraint Violation",
+    "errors": [
+      { "field": "email", "error": "must be a well-formed email address" },
+      { "field": "age", "error": "must be greater than or equal to 18" }
+    ]
+  }
+  ```
+
+  ## What To Do
+
+  1. Verify all required fields are present.
+  2. Ensure fields match expected formats (email, UUID, number ranges, etc.).
+  3. Check for uniqueness or domain-specific constraints.
+  4. Refer to API documentation for field requirements.

@@ -1,0 +1,24 @@
+version: "1"
+id: "validation/missing-query-params"
+title: "Missing Query Params"
+status_code: 400
+summary: "One or more query params are missing"
+description: |
+  ## What Happened
+
+  The request could not be processed because it was missing required query parameters.
+
+  ## Example Error
+
+      {
+        "status": 400,
+        "title": "Missing Query Params",
+        "params": [
+          { "param": "email", "type": "string" },
+          { "param": "age", "type": "integer" }
+        ]
+      }
+
+  ## What To Do
+
+  1. Verify all required query params are present.

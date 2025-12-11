@@ -1,0 +1,7 @@
+services:
+  failbook:
+    image: malczuuu/failbook:latest
+    ports:
+      - "127.0.0.1:12001:12001"
+    volumes:
+      - "./problems:/failbook/problem-docs:ro"
