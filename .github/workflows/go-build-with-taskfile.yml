@@ -27,8 +27,16 @@ jobs:
           go-version: 1.24.0
           check-latest: true
 
-      - name: Install Task
-        run: curl -sL https://taskfile.dev/install.sh | sh
+      - name: Restore Task from cache
+        id: cache-task
+        uses: actions/cache@v4
+        with:
+          path: ./bin/task
+          key: task-bin
+
+      - name: Install Task (if not cached)
+        if: steps.cache-task.outputs.cache-hit != 'true'
+        run: curl -sL https://taskfile.dev/install.sh | bash
 
       - name: Show Go Version
         run: go version
