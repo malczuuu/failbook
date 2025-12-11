@@ -27,22 +27,12 @@ jobs:
           go-version: 1.24.0
           check-latest: true
 
-      - name: Restore Task from cache
-        id: cache-task
-        uses: actions/cache@v4
-        with:
-          path: ./bin/task
-          key: task-bin-v3
-
-      - name: Install Task (if not cached)
-        if: steps.cache-task.outputs.cache-hit != 'true'
-        run: curl -sL https://taskfile.dev/install.sh | bash
-
       - name: Show Go Version
         run: go version
 
       - name: Run Tests
-        run: ./bin/task test
+        run: go test -v ./...
 
       - name: Build
-        run: ./bin/task build
+        run: |
+          CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o ./dist/ ./cmd/failbook
