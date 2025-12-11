@@ -67,12 +67,13 @@ definitions.
 ### YAML Schema
 
 ```yaml
-version: "1"           # Required: Schema version, must be "1"
-id: "404"              # Required: Unique error identifier
-title: "Not Found"     # Required: Short error title
-status_code: 404       # Required: HTTP status code
+version: "1"               # Required: Schema version, must be "1"
+id: "404"                  # Required: Unique error identifier
+name: "Validation Failed"  # Optional: Compossed as "{title} {status_code}" if not provided
+title: "Not Found"         # Required: Short error title
+status_code: 404           # Required: HTTP status code
 summary: "The requested resource could not be found"  # Required: Brief summary (shown on index)
-description: |         # Required: Detailed description (supports Markdown)
+description: |             # Required: Detailed description (supports Markdown)
   ## What Happened
   
   The server cannot find the requested resource.
