@@ -70,12 +70,12 @@ jobs:
 
       - name: Build and push images from GitHub tags
         run: |
-          docker build -f Dockerfile.builder -t failbook-builder:latest .
+          docker build -q -f Dockerfile.builder -t failbook-builder:latest .
 
           for TAG in ${{ steps.plan.outputs.rebuild_tags }}; do
             echo "::notice::checking out tag v$TAG"
             git checkout "v$TAG"
-            IMAGE_ID=$(docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/failbook:$TAG .)
+            IMAGE_ID=$(docker build -q -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/failbook:$TAG .)
             docker push ${{ secrets.DOCKER_USERNAME }}/failbook:$TAG
 
             if [[ "$TAG" =~ ^([0-9]+\.[0-9]+) ]]; then
