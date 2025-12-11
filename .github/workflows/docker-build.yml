@@ -20,14 +20,22 @@ jobs:
           echo "Tag: $TAG"
 
           if [[ "$TAG" =~ ^v([0-9]+\.[0-9]+\.[0-9]+.*)$ ]]; then
-            VERSION="${BASH_REMATCH[1]}"
+            FULL_VERSION="${BASH_REMATCH[1]}"
           else
             echo "::error::unrecognized tag format $TAG"
             exit 1
           fi
 
-          echo "::notice::evaluated version $VERSION"
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          if [[ "$FULL_VERSION" =~ ^([0-9]+\.[0-9]+) ]]; then
+            SHORT_VERSION="${BASH_REMATCH[1]}"
+          else
+            echo "::error::failed to extract short version (major.minor) from $FULL_VERSION"
+            exit 1
+          fi
+
+          echo "::notice::evaluated version $FULL_VERSION ($SHORT_VERSION)"
+          echo "full_version=$FULL_VERSION" >> $GITHUB_OUTPUT
+          echo "short_version=$SHORT_VERSION" >> $GITHUB_OUTPUT
 
       - name: Log in to Docker Hub
         if: startsWith(github.ref, 'refs/tags/')  # only login when we intend to push (i.e. tag builds)
@@ -52,5 +60,6 @@ jobs:
           file: Dockerfile
           push: ${{ startsWith(github.ref, 'refs/tags/') }}  # true on tag, false on branch
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/failbook:${{ steps.tag_info.outputs.version }}
+            ${{ secrets.DOCKER_USERNAME }}/failbook:${{ steps.tag_info.outputs.full_version }}
+            ${{ secrets.DOCKER_USERNAME }}/failbook:${{ steps.tag_info.outputs.short_version }}
             ${{ secrets.DOCKER_USERNAME }}/failbook:latest
