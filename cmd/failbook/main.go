@@ -2,6 +2,9 @@ package main
 
 import (
 	"context"
+	"crypto/sha256"
+	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"os/signal"
@@ -20,6 +23,8 @@ import (
 	"github.com/malczuuu/failbook/internal/middleware"
 	"github.com/malczuuu/failbook/internal/problems"
 )
+
+var launchTimestamp = time.Now().Unix()
 
 func main() {
 	cfg := config.Load()
@@ -56,6 +61,14 @@ func main() {
 	}
 
 	router.GET("/", func(c *gin.Context) {
+		etag := computeIndexETag()
+		c.Header("ETag", etag)
+
+		if match := c.GetHeader("If-None-Match"); match == etag {
+			c.Status(http.StatusNotModified)
+			return
+		}
+
 		c.HTML(http.StatusOK, "index.tmpl", gin.H{
 			"title":    "API Error Documentation",
 			"problems": problemRegistry.GetAll(),
@@ -67,9 +80,15 @@ func main() {
 		id := c.Param("id")
 		problem, exists := problemRegistry.Get(id)
 		if !exists {
-			c.HTML(http.StatusNotFound, "404.tmpl", gin.H{
-				"baseHref": cfg.BaseHref,
-			})
+			c.HTML(http.StatusNotFound, "404.tmpl", gin.H{"baseHref": cfg.BaseHref})
+			return
+		}
+
+		etag := computeProblemETag(problem)
+		c.Header("ETag", etag)
+
+		if match := c.GetHeader("If-None-Match"); match == etag {
+			c.Status(http.StatusNotModified)
 			return
 		}
 
@@ -85,9 +104,15 @@ func main() {
 		id := c.Param("id") + c.Param("wildcard")
 		problem, exists := problemRegistry.Get(id)
 		if !exists {
-			c.HTML(http.StatusNotFound, "404.tmpl", gin.H{
-				"baseHref": cfg.BaseHref,
-			})
+			c.HTML(http.StatusNotFound, "404.tmpl", gin.H{"baseHref": cfg.BaseHref})
+			return
+		}
+
+		etag := computeProblemETag(problem)
+		c.Header("ETag", etag)
+
+		if match := c.GetHeader("If-None-Match"); match == etag {
+			c.Status(http.StatusNotModified)
 			return
 		}
 
@@ -99,15 +124,11 @@ func main() {
 	})
 
 	router.NoRoute(func(c *gin.Context) {
-		c.HTML(http.StatusNotFound, "404.tmpl", gin.H{
-			"baseHref": cfg.BaseHref,
-		})
+		c.HTML(http.StatusNotFound, "404.tmpl", gin.H{"baseHref": cfg.BaseHref})
 	})
 
 	router.NoMethod(func(c *gin.Context) {
-		c.HTML(http.StatusNotFound, "404.tmpl", gin.H{
-			"baseHref": cfg.BaseHref,
-		})
+		c.HTML(http.StatusNotFound, "404.tmpl", gin.H{"baseHref": cfg.BaseHref})
 	})
 
 	addr := ":" + cfg.Port
@@ -138,4 +159,28 @@ func main() {
 	}
 
 	log.Info().Msg("graceful shutdown completed")
+}
+
+func HandleWithETag(c *gin.Context, etag string, render func()) {
+	c.Header("ETag", etag)
+
+	if match := c.GetHeader("If-None-Match"); match != "" && match == etag {
+		c.Status(http.StatusNotModified)
+		return
+	}
+
+	render()
+}
+
+func computeIndexETag() string {
+	h := sha256.New()
+	io.WriteString(h, fmt.Sprintf("%d", launchTimestamp))
+	return fmt.Sprintf(`"%x"`, h.Sum(nil))
+}
+
+func computeProblemETag(p *problems.ProblemConfig) string {
+	h := sha256.New()
+	io.WriteString(h, fmt.Sprintf("%d", launchTimestamp))
+	io.WriteString(h, p.ID)
+	return fmt.Sprintf(`"%x"`, h.Sum(nil))
 }
