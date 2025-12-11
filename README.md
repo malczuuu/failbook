@@ -1,6 +1,6 @@
 # Failbook
 
-[![Go Build with Taskfile](https://github.com/malczuuu/failbook/actions/workflows/go-build-with-taskfile.yml/badge.svg)](https://github.com/malczuuu/failbook/actions/workflows/go-build-with-taskfile.yml)
+[![Go Build](https://github.com/malczuuu/failbook/actions/workflows/go-build.yml/badge.svg)](https://github.com/malczuuu/failbook/actions/workflows/go-build.yml)
 [![DockerHub](https://img.shields.io/docker/v/malczuuu/failbook?label=DockerHub)](https://hub.docker.com/r/malczuuu/failbook)
 [![License](https://img.shields.io/github/license/malczuuu/failbook)](https://github.com/malczuuu/failbook/blob/main/LICENSE)
 
