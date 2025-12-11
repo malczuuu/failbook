@@ -28,3 +28,14 @@ tasks:
     cmds:
       - rm -rf dist/ && mkdir dist/
       - CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o ./dist/ ./cmd/failbook
+
+  build-docker:
+    desc: Build malczuuu/failbook:latest Docker image
+    # If failbook-builder:latest image does not exists, it builds it as well.
+    cmds:
+      - |
+        if ! docker image inspect failbook-builder:latest >/dev/null 2>&1; then
+          echo "[INFO] Builder image not found. Building taskbook-builder:latest ..."
+          docker build -f Dockerfile.builder -t failbook-builder:latest .
+        fi
+        docker build -f Dockerfile -t malczuuu/failbook:latest .
