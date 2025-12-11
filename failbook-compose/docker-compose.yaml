@@ -3,5 +3,7 @@ services:
     image: malczuuu/failbook:latest
     ports:
       - "127.0.0.1:12001:12001"
+    environment:
+      FAILBOOK_HEALTH_ENABLED: "true"
     volumes:
       - "./problems:/failbook/problem-docs:ro"
