@@ -66,14 +66,14 @@
       <main>
          <section class="error-list">
             <h2>Available API Errors</h2>
-            <ul>
+            <ol>
                {{ range $id, $problem := .problems }}
                <li>
                   <a href="{{ $.baseHref }}/{{ $problem.ID }}">{{ $problem.Name }}</a>
                   <p class="description">{{ $problem.Summary }}</p>
                </li>
                {{ end }}
-            </ul>
+            </ol>
          </section>
       </main>
    </body>
