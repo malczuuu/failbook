@@ -84,7 +84,7 @@ jobs:
             fi
 
             # If this is the overall latest patch, tag and push as latest
-            if [[ "$TAG" == "$LATEST" ]]; then
+            if [[ "$TAG" == "${{ steps.plan.outputs.latest_tag }}" ]]; then
               docker image tag ${{ secrets.DOCKER_USERNAME }}/failbook:$TAG ${{ secrets.DOCKER_USERNAME }}/failbook:latest
               docker push ${{ secrets.DOCKER_USERNAME }}/failbook:latest
             fi
