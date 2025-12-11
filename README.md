@@ -1,6 +1,7 @@
 # Failbook
 
 [![Go Build with Taskfile](https://github.com/malczuuu/failbook/actions/workflows/go-build-with-taskfile.yml/badge.svg)](https://github.com/malczuuu/failbook/actions/workflows/go-build-with-taskfile.yml)
+[![DockerHub](https://img.shields.io/docker/v/malczuuu/failbook?label=DockerHub)](https://hub.docker.com/r/malczuuu/failbook)
 [![License](https://img.shields.io/github/license/malczuuu/failbook)](https://github.com/malczuuu/failbook/blob/main/LICENSE)
 
 A simple HTTP API error documentation service written in Go. Failbook serves simple, markdown-powered error 
@@ -30,9 +31,10 @@ Visit http://localhost:12001 to see your error documentation.
 
 ### Using Docker
 
+Docker images known on Docker Hub as [`malczuuu/failbook`](https://hub.docker.com/r/malczuuu/failbook).
+
 ```bash
-docker build -t failbook .
-docker run -p 12001:12001 -v $(pwd)/problem-docs:/app/problem-docs:ro failbook
+docker run -p 12001:12001 -v $(pwd)/problem-docs:/failbook/problem-docs:ro malczuuu/failbook:latest
 ```
 
 ## Configuration
