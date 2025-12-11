@@ -28,8 +28,7 @@ jobs:
           check-latest: true
 
       - name: Install Task
-        run: |
-          curl -sL https://taskfile.dev/install.sh | sh
+        run: curl -sL https://taskfile.dev/install.sh | sh
 
       - name: Show Go Version
         run: go version
