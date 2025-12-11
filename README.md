@@ -1,7 +1,7 @@
 # Failbook
 
 [![Go Build](https://github.com/malczuuu/failbook/actions/workflows/go-build.yml/badge.svg)](https://github.com/malczuuu/failbook/actions/workflows/go-build.yml)
-[![DockerHub](https://img.shields.io/docker/v/malczuuu/failbook?label=DockerHub)](https://hub.docker.com/r/malczuuu/failbook)
+[![DockerHub](https://img.shields.io/docker/v/malczuuu/failbook?logo=docker&label=DockerHub)](https://hub.docker.com/r/malczuuu/failbook)
 [![License](https://img.shields.io/github/license/malczuuu/failbook)](https://github.com/malczuuu/failbook/blob/main/LICENSE)
 
 A simple HTTP API error documentation service written in Go. Failbook serves markdown-powered error documentation pages
