@@ -32,7 +32,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ./bin/task
-          key: task-bin
+          key: task-bin-v3
 
       - name: Install Task (if not cached)
         if: steps.cache-task.outputs.cache-hit != 'true'
