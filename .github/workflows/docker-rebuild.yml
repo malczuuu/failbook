@@ -60,7 +60,6 @@ jobs:
           for minor in "${!latest_patch[@]}"; do
             full="${minor}.${latest_patch[$minor]}"
             REBUILD_TAGS+=("$full")
-            REBUILD_TAGS+=("$minor")
           done
 
           echo "rebuild_tags=${REBUILD_TAGS[*]}" >> $GITHUB_OUTPUT
