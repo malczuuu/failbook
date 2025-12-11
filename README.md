@@ -7,9 +7,9 @@
 A simple HTTP API error documentation service written in Go. Failbook serves simple, markdown-powered error 
 documentation pages for HTTP API error responses.
 
-While writing [Problem4J](https://github.com/malczuuu/problem4j-spring) library, my assumption was that `type` field
-must be a resolvable HTTP URI. This turns out is not always the case, but for the sole purpose of experimentation,
-this application was created. It allows configuring a simple static `Problem` documentation pages.
+While working on [Problem4J](https://github.com/malczuuu/problem4j-spring) library, the initial assumption was that
+`type` field must be a resolvable HTTP URI. This turns out is not always the case, but for the sole purpose of
+experimentation, this application was created. It allows configuring a simple static `Problem` documentation pages.
 
 ## Quick Start
 
