@@ -30,13 +30,14 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Log in to Docker Hub
-        if: startsWith(github.ref, 'refs/tags/') # Only login when we intend to push (i.e. tag builds)
+        if: startsWith(github.ref, 'refs/tags/')  # only login when we intend to push (i.e. tag builds)
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      - name: Build builder:latest Image
+      # failbook-builder:latest image is used as FROM in main Dockerfile
+      - name: Build failbook-builder:latest Image
         uses: docker/build-push-action@v6
         with:
           context: .
