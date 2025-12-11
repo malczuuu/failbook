@@ -2,6 +2,7 @@ package problems
 
 import (
 	"fmt"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -43,27 +44,32 @@ func LoadFromDirectory(dirPath string) (*ProblemRegistry, error) {
 		return nil, fmt.Errorf("problems directory does not exist: %s", dirPath)
 	}
 
-	files, err := os.ReadDir(dirPath)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read problems directory: %w", err)
-	}
-
 	var loadFailures []error
 
-	for _, file := range files {
-		if file.IsDir() {
-			continue
+	err := filepath.WalkDir(dirPath, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			loadFailures = append(loadFailures, fmt.Errorf("access error at %s: %w", path, err))
+			return nil
 		}
 
-		ext := filepath.Ext(file.Name())
+		if d.IsDir() {
+			return nil
+		}
+
+		ext := filepath.Ext(d.Name())
 		if ext != ".yaml" && ext != ".yml" {
-			continue
+			return nil
 		}
 
-		filePath := filepath.Join(dirPath, file.Name())
-		if err := registry.loadFile(filePath); err != nil {
-			loadFailures = append(loadFailures, fmt.Errorf("failed to load %s: %w", file.Name(), err))
+		if err := registry.loadFile(path); err != nil {
+			loadFailures = append(loadFailures, fmt.Errorf("failed to load %s: %w", path, err))
 		}
+
+		return nil
+	})
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to walk directory: %w", err)
 	}
 
 	if len(loadFailures) > 0 {
