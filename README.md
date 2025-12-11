@@ -13,9 +13,9 @@ this application was created. It allows configuring a simple static `Problem` do
 
 ## Quick Start
 
-### Using Go (via Taskfile)
+### Using Go
 
-It uses [Taskfile](https://taskfile.dev/docs/getting-started) tool.
+Current instructions use [Taskfile](https://taskfile.dev/docs/getting-started) tool.
 
 ```bash
 git clone https://github.com/malczuuu/failbook.git
@@ -37,17 +37,39 @@ Docker images known on Docker Hub as [`malczuuu/failbook`](https://hub.docker.co
 docker run -p 12001:12001 -v $(pwd)/problem-docs:/failbook/problem-docs:ro malczuuu/failbook:latest
 ```
 
+See also [`failbook-compose/`](./failbook-compose/) for an `docker-compose.yaml` demo.
+
+To build Docker image on local machine, use `build-docker` task. It will also build `failbook-builder:latest` image for
+speeding up subsequent builds. See [`Dockerfile.builder`](./Dockerfile.builder) for more details.
+
+```bash
+task build-docker
+```
+
+How to do this without `task`:
+
+<details>
+<summary><b>Expand...</b></summary>
+
+```bash
+docker build -f Dockerfile.builder -t failbook-builder:latest .
+docker build -f Dockerfile -t malczuuu/failbook:latest .
+```
+
+</details>
+
 ## Configuration
 
 Failbook is configured via environment variables:
 
-| Variable                      | Default          | Description                                                 |
-|-------------------------------|------------------|-------------------------------------------------------------|
-| `FAILBOOK_PORT`               | `12001`          | HTTP server port                                            |
-| `FAILBOOK_LOG_LEVEL`          | `info`           | log level (trace, debug, info, warn, error, fatal)          |
-| `FAILBOOK_PROMETHEUS_ENABLED` | `false`          | enable Prometheus metrics endpoint                          |
-| `FAILBOOK_PROBLEM_DOCS_DIR`   | `./problem-docs` | directory containing error YAML files                       |
-| `FAILBOOK_BASE_HREF`          | (empty)          | base path for reverse proxy deployments (e.g., `/api/docs`) |
+| Variable                      | Default                  | Description                                                 |
+|-------------------------------|--------------------------|-------------------------------------------------------------|
+| `FAILBOOK_PORT`               | `12001`                  | HTTP server port                                            |
+| `FAILBOOK_LOG_LEVEL`          | `info`                   | log level (trace, debug, info, warn, error, fatal)          |
+| `FAILBOOK_HEALTH_ENABLED`     | `false`                  | enable health endpoint                                      |
+| `FAILBOOK_PROMETHEUS_ENABLED` | `false`                  | enable Prometheus metrics endpoint                          |
+| `FAILBOOK_PROBLEM_DOCS_DIR`   | `/failbook/problem-docs` | directory containing error YAML files                       |
+| `FAILBOOK_BASE_HREF`          | (empty)                  | base path for reverse proxy deployments (e.g., `/api/docs`) |
 
 ### Example
 
