@@ -1,4 +1,6 @@
-name: Refresh Docker Images from GitHub Tags
+# Refreshing each MINOR version on latest PATCH version to update internal dependencies of base
+# Docker images. To be reworked in the future with a text file containing supported versions.
+name: Refresh Docker Images
 
 on:
   schedule:
@@ -39,17 +41,18 @@ jobs:
           declare -A latest_patch
           HIGHEST="0.0.0"
 
+          # Taking for rebuilding all MINOR versions on the highest PATCH
           for t in "${TAGS[@]}"; do
             if [[ "$t" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+) ]]; then
               minor="${BASH_REMATCH[1]}.${BASH_REMATCH[2]}"
               patch="${BASH_REMATCH[3]}"
 
-              # latest patch per minor
+              # Take latest PATCH per MINOR version
               if [[ -z "${latest_patch[$minor]}" ]] || (( patch > latest_patch[$minor] )); then
                 latest_patch[$minor]=$patch
               fi
 
-              # overall highest
+              # Evaluate highest version overall that will be marked 'latest'
               if [[ "$t" > "$HIGHEST" ]]; then
                 HIGHEST="$t"
               fi
@@ -67,7 +70,7 @@ jobs:
 
       - name: Build and push images from GitHub tags
         run: |
-          docker build -f Dockerfile.builder -t failbook-builder:latest .
+          IMAGE_ID=$(docker build -f Dockerfile.builder -t failbook-builder:latest .)
 
           for TAG in ${{ steps.plan.outputs.rebuild_tags }}; do
             echo "::notice::checking out tag v$TAG"
@@ -77,7 +80,7 @@ jobs:
 
             if [[ "$TAG" =~ ^([0-9]+\.[0-9]+) ]]; then
               SHORT_TAG="${BASH_REMATCH[1]}"
-              docker image tag ${{ secrets.DOCKER_USERNAME }}/failbook:$TAG ${{ secrets.DOCKER_USERNAME }}/failbook:$SHORT_TAG
+              docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/failbook:$SHORT_TAG
             docker push ${{ secrets.DOCKER_USERNAME }}/failbook:$SHORT_TAG
             else
               echo "::error::failed to extract short version (major.minor) from $FULL_VERSION"
@@ -85,7 +88,9 @@ jobs:
 
             # If this is the overall latest patch, tag and push as latest
             if [[ "$TAG" == "${{ steps.plan.outputs.latest_tag }}" ]]; then
-              docker image tag ${{ secrets.DOCKER_USERNAME }}/failbook:$TAG ${{ secrets.DOCKER_USERNAME }}/failbook:latest
+              docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/failbook:latest
               docker push ${{ secrets.DOCKER_USERNAME }}/failbook:latest
             fi
+
+            docker rmi -f $IMAGE_ID
           done
