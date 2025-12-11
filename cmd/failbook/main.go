@@ -80,6 +80,7 @@ func main() {
 		})
 	})
 
+	// Walkaround for resolving any HTTP path into a problem documentation page.
 	router.GET("/:id/*wildcard", func(c *gin.Context) {
 		id := c.Param("id") + c.Param("wildcard")
 		problem, exists := problemRegistry.Get(id)
