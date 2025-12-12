@@ -5,7 +5,6 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
-	"strconv"
 
 	"github.com/goccy/go-yaml"
 	"github.com/rs/zerolog/log"
@@ -98,7 +97,7 @@ func validateProblemConfig(config *ProblemConfig) error {
 		return fmt.Errorf("problem configuration missing required field: status_code")
 	}
 	if config.Name == "" {
-		config.Name = strconv.Itoa(config.StatusCode) + " " + config.Title
+		config.Name = config.Title
 	}
 	return nil
 }

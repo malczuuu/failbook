@@ -4,7 +4,7 @@
    <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>{{ .problem.StatusCode }} {{ .problem.Title }} - Error Documentation</title>
+      <title>[{{ .problem.StatusCode }}] {{ .problem.Name }} - API Problem Docs</title>
       <style>
          body {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -151,12 +151,15 @@
    </head>
    <body>
       <header>
-         <h1><a href="{{ .baseHref }}/">Problems Docs</a></h1>
+         <h1><a href="{{ .baseHref }}/">API Problems Docs</a></h1>
       </header>
       <main>
          <a href="{{ .baseHref }}/" class="back-link">← Back to homepage</a>
          <section class="problem">
-            <h2>{{ .problem.StatusCode }} {{ .problem.Title }}</h2>
+            <h2>[{{ .problem.StatusCode }}] {{ .problem.Name }}</h2>
+            {{ if ne .problem.Name .problem.Title }}
+            <p class="summary">{{ .problem.Title }}</p>
+            {{ end }}
             {{ if .problem.Summary }}
             <p class="summary">{{ .problem.Summary }}</p>
             {{ end }}

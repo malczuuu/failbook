@@ -4,7 +4,7 @@
    <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>404 - Documentation Not Found</title>
+      <title>404 - API Problem Docs</title>
       <style>
          body {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -16,6 +16,7 @@
             flex-direction: column;
             min-height: 100vh;
          }
+
          header {
             background-color: #343a40;
             color: #fff;
@@ -24,6 +25,13 @@
          header h1 {
             margin: 0;
             font-size: 1.8rem;
+         }
+         header a {
+            color: #fff;
+            text-decoration: none;
+         }
+         header a:hover {
+            text-decoration: underline;
          }
          main {
             flex: 1;
@@ -65,7 +73,7 @@
    </head>
    <body>
       <header>
-         <h1>Problems Docs</h1>
+         <h1><a href="{{ .baseHref }}/">API Problems Docs</a></h1>
       </header>
       <main>
          <div class="content">

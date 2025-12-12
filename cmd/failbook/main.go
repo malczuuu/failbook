@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"sort"
 	"syscall"
 	"time"
 
@@ -75,9 +76,23 @@ func main() {
 			return
 		}
 
+		problemsAsMap := problemRegistry.GetAll()
+
+		problemsAsList := make([]*problems.ProblemConfig, 0, len(problemsAsMap))
+		for _, p := range problemsAsMap {
+			problemsAsList = append(problemsAsList, p)
+		}
+
+		sort.Slice(problemsAsList, func(i, j int) bool {
+			if problemsAsList[i].StatusCode != problemsAsList[j].StatusCode {
+				return problemsAsList[i].StatusCode < problemsAsList[j].StatusCode
+			}
+			return problemsAsList[i].Name < problemsAsList[j].Name
+		})
+
 		c.HTML(http.StatusOK, "index.tmpl", gin.H{
 			"title":    "API Error Documentation",
-			"problems": problemRegistry.GetAll(),
+			"problems": problemsAsList,
 			"baseHref": cfg.BaseHref,
 		})
 	})
