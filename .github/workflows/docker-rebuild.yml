@@ -72,9 +72,9 @@ jobs:
             REBUILD_TAGS+=("$full")
           done
 
-          REBUILD_TAGS=$(printf "%s\n" "${REBUILD_TAGS[@]}" | sort -V | xargs)
+          SORTED_TAGS=$(printf "%s\n" "${REBUILD_TAGS[@]}" | sort -V | xargs)
 
-          echo "rebuild_tags=${REBUILD_TAGS[*]}" >> $GITHUB_OUTPUT
+          echo "rebuild_tags=${SORTED_TAGS[*]}" >> $GITHUB_OUTPUT
           echo "latest_tag=${HIGHEST}" >> $GITHUB_OUTPUT
 
       - name: Build and push images from GitHub tags
