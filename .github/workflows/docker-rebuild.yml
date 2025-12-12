@@ -72,7 +72,8 @@ jobs:
         run: |
           docker build -q -f Dockerfile.builder -t failbook-builder:latest .
 
-          SORTED_TAGS=$(printf "%s\n" "${{ steps.plan.outputs.rebuild_tags }}" | sort -V | xargs)
+          read -r -a REBUILD_TAGS <<< "${{ steps.plan.outputs.rebuild_tags }}"
+          SORTED_TAGS=$(printf "%s\n" "${REBUILD_TAGS[@]}" | sort -V | xargs)
 
           for TAG in $SORTED_TAGS; do
             echo "::notice::checking out tag v$TAG"
