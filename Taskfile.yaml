@@ -5,15 +5,20 @@ tasks:
     cmds:
       - task --list
 
+  clean:
+    desc: Clean build artifacts
+    cmds:
+      - rm -rf dist/
+
   test:
-    desc: Run tests
+    desc: Execute tests
     cmds:
       - go test -v ./...
 
   build:
     desc: Build application
     cmds:
-      - rm -rf dist/ && mkdir dist/
+      - task: clean
       - go build -o ./dist/ ./cmd/failbook
 
   # builds a fully static Linux binary of Go application
@@ -26,16 +31,21 @@ tasks:
   build-prod:
     desc: Build application for production
     cmds:
-      - rm -rf dist/ && mkdir dist/
+      - task: clean
       - CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o ./dist/ ./cmd/failbook
 
-  build-docker:
-    desc: Build malczuuu/failbook:latest Docker image
-    # If failbook-builder:latest image does not exists, it builds it as well.
+  build-docker-builder:
+    desc: Build failbook-builder:latest image
     cmds:
+      # If failbook-builder:latest image does not exists, it builds it as well.
       - |
         if ! docker image inspect failbook-builder:latest >/dev/null 2>&1; then
           echo "[INFO] Builder image not found. Building taskbook-builder:latest ..."
           docker build -f Dockerfile.builder -t failbook-builder:latest .
         fi
-        docker build -f Dockerfile -t malczuuu/failbook:latest .
+
+  build-docker:
+    desc: Build malczuuu/failbook:latest Docker image
+    cmds:
+      - task: build-docker-builder
+      - docker build -f Dockerfile -t malczuuu/failbook:latest .
