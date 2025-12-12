@@ -77,7 +77,7 @@
             <ol>
                {{ range $problem := .problems }}
                <li>
-                  <a href="{{ $.baseHref }}/{{ $problem.ID }}">[{{ $problem.StatusCode }}] {{ $problem.Name }}</a>
+                  <a href="{{ trimSuffix $.baseHref "/" }}/{{ $problem.ID }}">[{{ $problem.StatusCode }}] {{ $problem.Name }}</a>
                   <p class="description">{{ $problem.Summary }}</p>
                </li>
                {{ end }}

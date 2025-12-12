@@ -4,11 +4,13 @@ import (
 	"context"
 	"crypto/sha256"
 	"fmt"
+	"html/template"
 	"io"
 	"net/http"
 	"os"
 	"os/signal"
 	"sort"
+	"strings"
 	"syscall"
 	"time"
 
@@ -48,6 +50,7 @@ func main() {
 	router.Use(middleware.ZerologRecovery())
 	router.Use(middleware.LoggingAndMetricsMiddleware())
 
+	router.SetFuncMap(template.FuncMap{"trimSuffix": trimSuffix})
 	router.LoadHTMLGlob("./templates/*")
 
 	if cfg.HealthEnabled {
@@ -68,80 +71,18 @@ func main() {
 	})
 
 	router.GET("/", func(c *gin.Context) {
-		etag := computeIndexETag()
-		c.Header("ETag", etag)
-
-		if match := c.GetHeader("If-None-Match"); match == etag {
-			c.Status(http.StatusNotModified)
-			return
-		}
-
-		problemsAsMap := problemRegistry.GetAll()
-
-		problemsAsList := make([]*problems.ProblemConfig, 0, len(problemsAsMap))
-		for _, p := range problemsAsMap {
-			problemsAsList = append(problemsAsList, p)
-		}
-
-		sort.Slice(problemsAsList, func(i, j int) bool {
-			if problemsAsList[i].StatusCode != problemsAsList[j].StatusCode {
-				return problemsAsList[i].StatusCode < problemsAsList[j].StatusCode
-			}
-			return problemsAsList[i].Name < problemsAsList[j].Name
-		})
-
-		c.HTML(http.StatusOK, "index.tmpl", gin.H{
-			"title":    "API Error Documentation",
-			"problems": problemsAsList,
-			"baseHref": cfg.BaseHref,
-		})
+		renderIndex(c, problemRegistry, &cfg)
 	})
 
 	router.GET("/:id", func(c *gin.Context) {
 		id := c.Param("id")
-		problem, exists := problemRegistry.Get(id)
-		if !exists {
-			c.HTML(http.StatusNotFound, "404.tmpl", gin.H{"baseHref": cfg.BaseHref})
-			return
-		}
-
-		etag := computeProblemETag(problem)
-		c.Header("ETag", etag)
-
-		if match := c.GetHeader("If-None-Match"); match == etag {
-			c.Status(http.StatusNotModified)
-			return
-		}
-
-		c.HTML(http.StatusOK, "problem.tmpl", gin.H{
-			"problem":         problem,
-			"baseHref":        cfg.BaseHref,
-			"descriptionHTML": markdown.RenderToHTML(problem.Description),
-		})
+		renderProblem(c, problemRegistry, id, &cfg)
 	})
 
 	// Walkaround for resolving any HTTP path into a problem documentation page.
 	router.GET("/:id/*wildcard", func(c *gin.Context) {
 		id := c.Param("id") + c.Param("wildcard")
-		problem, exists := problemRegistry.Get(id)
-		if !exists {
-			c.HTML(http.StatusNotFound, "404.tmpl", gin.H{"baseHref": cfg.BaseHref})
-			return
-		}
-
-		etag := computeProblemETag(problem)
-		c.Header("ETag", etag)
-
-		if match := c.GetHeader("If-None-Match"); match == etag {
-			c.Status(http.StatusNotModified)
-			return
-		}
-
-		c.HTML(http.StatusOK, "problem.tmpl", gin.H{
-			"problem":         problem,
-			"baseHref":        cfg.BaseHref,
-			"descriptionHTML": markdown.RenderToHTML(problem.Description),
-		})
+		renderProblem(c, problemRegistry, id, &cfg)
 	})
 
 	router.NoRoute(func(c *gin.Context) {
@@ -182,15 +123,63 @@ func main() {
 	log.Info().Msg("graceful shutdown completed")
 }
 
-func HandleWithETag(c *gin.Context, etag string, render func()) {
+func trimSuffix(text string, suffix string) string {
+	if strings.HasSuffix(text, suffix) {
+		return text[:len(text)-len(suffix)]
+	}
+	return text
+}
+
+func renderIndex(c *gin.Context, problemRegistry *problems.ProblemRegistry, cfg *config.Config) {
+	etag := computeIndexETag()
 	c.Header("ETag", etag)
 
-	if match := c.GetHeader("If-None-Match"); match != "" && match == etag {
+	if match := c.GetHeader("If-None-Match"); match == etag {
 		c.Status(http.StatusNotModified)
 		return
 	}
 
-	render()
+	problemsAsMap := problemRegistry.GetAll()
+
+	problemsAsList := make([]*problems.ProblemConfig, 0, len(problemsAsMap))
+	for _, p := range problemsAsMap {
+		problemsAsList = append(problemsAsList, p)
+	}
+
+	sort.Slice(problemsAsList, func(i, j int) bool {
+		if problemsAsList[i].StatusCode != problemsAsList[j].StatusCode {
+			return problemsAsList[i].StatusCode < problemsAsList[j].StatusCode
+		}
+		return problemsAsList[i].Name < problemsAsList[j].Name
+	})
+
+	c.HTML(http.StatusOK, "index.tmpl", gin.H{
+		"title":    "API Error Documentation",
+		"problems": problemsAsList,
+		"baseHref": cfg.BaseHref,
+	})
+}
+
+func renderProblem(c *gin.Context, problemRegistry *problems.ProblemRegistry, id string, cfg *config.Config) {
+	problem, exists := problemRegistry.Get(id)
+	if !exists {
+		c.HTML(http.StatusNotFound, "404.tmpl", gin.H{"baseHref": cfg.BaseHref})
+		return
+	}
+
+	etag := computeProblemETag(problem)
+	c.Header("ETag", etag)
+
+	if match := c.GetHeader("If-None-Match"); match == etag {
+		c.Status(http.StatusNotModified)
+		return
+	}
+
+	c.HTML(http.StatusOK, "problem.tmpl", gin.H{
+		"problem":         problem,
+		"baseHref":        cfg.BaseHref,
+		"descriptionHTML": markdown.RenderToHTML(problem.Description),
+	})
 }
 
 func computeIndexETag() string {
