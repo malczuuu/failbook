@@ -40,3 +40,8 @@ info: successfully created annotated tag 'v1.2.3', with message 'Release 1.2.3'
 ```
 
 **Note:** You still need to push the created tag manually.
+
+## Refreshing Images
+
+For supported versions, images are automatically rebuild to update dependencies from base image.
+Versions for rebuilding must be set in [`supported_versions`](./.github/utils/supported_versions).
