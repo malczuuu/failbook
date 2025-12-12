@@ -1,4 +1,6 @@
+# This Compose file demonstrates how to run a standalone Failbook.
 services:
+
   failbook:
     image: malczuuu/failbook:latest
     ports:
@@ -7,3 +9,8 @@ services:
       FAILBOOK_HEALTH_ENABLED: "true"
     volumes:
       - "./problems:/failbook/problem-docs:ro"
+    networks:
+      - failbook
+
+networks:
+  failbook:

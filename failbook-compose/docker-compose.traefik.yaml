@@ -1,0 +1,36 @@
+# This Compose file demonstrates how to run Failbook behind a reverse proxy.
+# Traefik uses PathPrefix(`/failbook`), so the service is accessed via a
+# different path. Primarily used for testing the FAILBOOK_BASE_HREF parameter.
+services:
+
+  traefik:
+    image: traefik:v3.6.4
+    command:
+      - "--entrypoints.web.address=:80"
+      - "--providers.docker=true"
+    ports:
+      - "127.0.0.1:80:80"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - failbook
+
+  failbook:
+    image: malczuuu/failbook:latest
+    environment:
+      FAILBOOK_HEALTH_ENABLED: "true"
+      FAILBOOK_BASE_HREF: "/failbook"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.failbook.rule=PathPrefix(`/failbook`)"
+      - "traefik.http.routers.failbook.entrypoints=web"
+      - "traefik.http.services.failbook.loadbalancer.server.port=12001"
+      - "traefik.http.routers.failbook.middlewares=failbook-stripprefix"
+      - "traefik.http.middlewares.failbook-stripprefix.stripprefix.prefixes=/failbook"
+    volumes:
+      - "./problems:/failbook/problem-docs:ro"
+    networks:
+      - failbook
+
+networks:
+  failbook:
