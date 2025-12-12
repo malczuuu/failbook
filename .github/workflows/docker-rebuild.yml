@@ -41,11 +41,18 @@ jobs:
           declare -A latest_patch
           HIGHEST="0.0.0"
 
+          mapfile -t SUPPORTED < ./.github/utils/supported_versions
+
           # Taking for rebuilding all MINOR versions on the highest PATCH
           for t in "${TAGS[@]}"; do
             if [[ "$t" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+) ]]; then
               minor="${BASH_REMATCH[1]}.${BASH_REMATCH[2]}"
               patch="${BASH_REMATCH[3]}"
+
+              # Skip if minor version is not in supported list
+              if ! [[ " ${SUPPORTED[*]} " =~ " $minor " ]]; then
+                continue
+              fi
 
               # Take latest PATCH per MINOR version
               if [[ -z "${latest_patch[$minor]}" ]] || (( patch > latest_patch[$minor] )); then
