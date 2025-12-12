@@ -75,7 +75,7 @@ jobs:
           for TAG in ${{ steps.plan.outputs.rebuild_tags }}; do
             echo "::notice::checking out tag v$TAG"
             git checkout "v$TAG"
-            IMAGE_ID=$(docker build -q -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/failbook:$TAG .)
+            IMAGE_ID=$(docker build -q -f Dockerfile --build-arg FAILBOOK_VERSION=$TAG -t ${{ secrets.DOCKER_USERNAME }}/failbook:$TAG .)
             docker push ${{ secrets.DOCKER_USERNAME }}/failbook:$TAG
 
             if [[ "$TAG" =~ ^([0-9]+\.[0-9]+) ]]; then

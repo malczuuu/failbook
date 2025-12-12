@@ -30,6 +30,8 @@ func main() {
 	cfg := config.Load()
 	logging.ConfigureLogger(&cfg)
 
+	log.Info().Str("version", cfg.Version).Msg("starting failbook application")
+
 	problemRegistry, err := problems.LoadFromDirectory(cfg.ProblemsDir)
 	if err != nil {
 		log.Fatal().Err(err).Msg("failed to load error configurations")
@@ -59,6 +61,10 @@ func main() {
 		router.GET("/manage/prometheus", gin.WrapH(promhttp.Handler()))
 		log.Info().Str("path", "/manage/prometheus").Msg("prometheus endpoint exposed")
 	}
+
+	router.GET("/manage/info", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"version": cfg.Version})
+	})
 
 	router.GET("/", func(c *gin.Context) {
 		etag := computeIndexETag()
