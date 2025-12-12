@@ -4,7 +4,7 @@ name: Refresh Docker Images
 
 on:
   schedule:
-    - cron: "0 17 * * 5"  # Every Friday at 17:00 UTC
+    - cron: "0 3 1 1,4,7,10 *"  # at 03:00 UTC on Jan 1, Apr 1, Jul 1, and Oct 1
   workflow_dispatch:
 
 jobs:
