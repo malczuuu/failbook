@@ -72,7 +72,9 @@ jobs:
         run: |
           docker build -q -f Dockerfile.builder -t failbook-builder:latest .
 
-          for TAG in ${{ steps.plan.outputs.rebuild_tags }}; do
+          SORTED_TAGS=$(printf "%s\n" "${{ steps.plan.outputs.rebuild_tags }}" | sort -V | xargs)
+
+          for TAG in $SORTED_TAGS; do
             echo "::notice::checking out tag v$TAG"
             git checkout "v$TAG"
             IMAGE_ID=$(docker build -q -f Dockerfile --build-arg FAILBOOK_VERSION=$TAG -t ${{ secrets.DOCKER_USERNAME }}/failbook:$TAG .)
