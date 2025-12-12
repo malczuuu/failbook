@@ -16,7 +16,7 @@ ENV FAILBOOK_VERSION=${FAILBOOK_VERSION} \
     FAILBOOK_HEALTH_ENABLED=false \
     FAILBOOK_PROMETHEUS_ENABLED=false \
     FAILBOOK_PROBLEM_DOCS_DIR=/failbook/problem-docs \
-    FAILBOOK_BASE_HREF=
+    FAILBOOK_BASE_HREF=/
 
 RUN apk --no-cache add ca-certificates dumb-init
 

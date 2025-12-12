@@ -21,7 +21,7 @@ func Load() Config {
 		HealthEnabled:     getenv("FAILBOOK_HEALTH_ENABLED", "false") == "true",
 		PrometheusEnabled: getenv("FAILBOOK_PROMETHEUS_ENABLED", "false") == "true",
 		ProblemsDir:       getenv("FAILBOOK_PROBLEM_DOCS_DIR", "./problem-docs"),
-		BaseHref:          getenv("FAILBOOK_BASE_HREF", ""),
+		BaseHref:          getenv("FAILBOOK_BASE_HREF", "/"),
 		Version:           getenv("FAILBOOK_VERSION", "unspecified"),
 	}
 }
