@@ -1,5 +1,5 @@
 # Refreshing each MINOR version on latest PATCH version to update internal dependencies of base
-# Docker images. To be reworked in the future with a text file containing supported versions.
+# Docker images. Operates based on supported versions listed in .github/utils/supported_versions.
 name: Refresh Docker Images
 
 on:
