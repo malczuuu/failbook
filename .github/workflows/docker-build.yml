@@ -46,7 +46,7 @@ jobs:
 
       # failbook-builder:latest image is used as FROM in main Dockerfile
       - name: Build failbook-builder:latest Image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: Dockerfile.builder
@@ -54,7 +54,7 @@ jobs:
           tags: failbook-builder:latest
 
       - name: Build and Push Docker image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: Dockerfile
