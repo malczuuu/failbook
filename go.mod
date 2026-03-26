@@ -7,7 +7,7 @@ require (
 	github.com/goccy/go-yaml v1.19.2
 	github.com/prometheus/client_golang v1.23.2
 	github.com/rs/zerolog v1.34.0
-	github.com/yuin/goldmark v1.7.16
+	github.com/yuin/goldmark v1.8.2
 )
 
 require (
