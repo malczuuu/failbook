@@ -150,6 +150,10 @@ description: "You don't have permission to access this resource."
 
 The `description` field supports Markdown, powered by the [`yuin/goldmark`](https://github.com/yuin/goldmark) library.
 
+### Example
+
+![Failbook](https://raw.githubusercontent.com/malczuuu/failbook/main/docs/failbook.png)
+
 ## Endpoints
 
 ### Application Endpoints
